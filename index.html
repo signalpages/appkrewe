@@ -1,0 +1,522 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>AppKrewe | Product Studio</title>
+  <meta name="description" content="AppKrewe builds focused apps with clean UX, fast performance, and real support." />
+
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;800&family=Inter:wght@300;400;600&display=swap"
+    rel="stylesheet"
+  />
+
+  <style>
+    :root {
+      /* Subtle Mardi Gras: warm light base + green/gold + purple accents */
+      --bg-deep: #fbf7ef;               /* warm ivory */
+      --bg-card: rgba(255,255,255,0.78);
+      --bg-card-solid: #ffffff;
+
+      --text-primary: #111827;          /* slate-900 */
+      --text-secondary: rgba(17,24,39,0.72);
+
+      --accent-green: #0f6a3b;          /* mardi gras green */
+      --accent-gold:  #c9a227;          /* gold */
+      --accent-purple:#5b2a86;          /* purple accent (allowed) */
+
+      --accent-primary: var(--accent-green);
+      --accent-glow: rgba(15,106,59,0.18);
+
+      --border-glass: rgba(17,24,39,0.10);
+      --font-display: 'Outfit', sans-serif;
+      --font-body: 'Inter', sans-serif;
+
+      --link: var(--accent-green);
+      --shadow-soft: 0 18px 50px rgba(17,24,39,0.10);
+    }
+
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: var(--font-body);
+      background-color: var(--bg-deep);
+      color: var(--text-primary);
+      overflow-x: hidden;
+      line-height: 1.6;
+    }
+
+    a {
+      text-decoration: none;
+      color: inherit;
+      transition: color 0.25s, opacity 0.25s;
+    }
+    a:hover { color: var(--accent-purple); }
+
+    /* --- Ambient Background --- */
+    .ambient-bg {
+      position: fixed;
+      top: 0; left: 0;
+      width: 100%;
+      height: 100vh;
+      z-index: -2;
+      background:
+        radial-gradient(circle at 12% 18%, rgba(15,106,59,0.16), transparent 44%),
+        radial-gradient(circle at 88% 16%, rgba(201,162,39,0.16), transparent 46%),
+        radial-gradient(circle at 74% 88%, rgba(91,42,134,0.10), transparent 48%);
+    }
+    
+    .grid-overlay {
+      position: fixed;
+      inset: 0;
+      z-index: -1;
+      background-image:
+        linear-gradient(var(--border-glass) 1px, transparent 1px),
+        linear-gradient(90deg, var(--border-glass) 1px, transparent 1px);
+      background-size: 52px 52px;
+      opacity: 0.045;
+      mask-image: linear-gradient(to bottom, black, transparent);
+    }
+
+    /* --- Layout --- */
+    .container {
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: 0 2rem;
+    }
+
+    /* --- Store Badges --- */
+    .store-badge {
+    height: 44px;
+    width: auto;
+    display: inline-block;
+    }
+
+    /* --- Header --- */
+    header {
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      z-index: 100;
+      backdrop-filter: blur(12px);
+      background: rgba(251,247,239,0.78);
+      border-bottom: 1px solid var(--border-glass);
+      padding: 1rem 0;
+    }
+
+    nav {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .logo {
+      font-family: var(--font-display);
+      font-weight: 800;
+      font-size: 1.5rem;
+      letter-spacing: -0.5px;
+      background: linear-gradient(135deg, var(--accent-green), var(--accent-purple));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    .nav-links {
+      display: flex;
+      gap: 2rem;
+      font-size: 0.9rem;
+      font-weight: 600;
+    }
+    .nav-links a { opacity: 0.85; }
+    .nav-links a:hover { opacity: 1; }
+
+    .btn-contact {
+      padding: 0.55rem 1.1rem;
+      background: linear-gradient(135deg, var(--accent-green), var(--accent-purple));
+      border-radius: 10px;
+      color: #fff !important;
+      font-weight: 700;
+      transition: transform 0.18s, box-shadow 0.18s;
+      box-shadow: 0 10px 22px rgba(91,42,134,0.10), 0 10px 22px rgba(15,106,59,0.10);
+    }
+    .btn-contact:hover {
+      transform: translateY(-1px);
+      box-shadow: 0 14px 30px rgba(91,42,134,0.16), 0 14px 30px rgba(15,106,59,0.12);
+    }
+
+    /* --- Hero --- */
+    .hero {
+      min-height: 55vh;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      text-align: center;
+      padding-top: 6.5rem;
+    }
+
+    h1 {
+      font-family: var(--font-display);
+      font-size: 4rem;
+      line-height: 1.08;
+      font-weight: 800;
+      margin-bottom: 1.2rem;
+      background: linear-gradient(to bottom right, var(--accent-green), var(--accent-purple));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    .hero p {
+      font-size: 1.15rem;
+      color: var(--text-secondary);
+      max-width: 720px;
+      margin-bottom: 1.25rem;
+    }
+
+    /* --- Section Styling --- */
+    section {
+      padding: 6rem 0;
+      border-top: 1px solid var(--border-glass);
+    }
+
+    h2 {
+      font-family: var(--font-display);
+      font-size: 2.3rem;
+      margin-bottom: 1.6rem;
+      color: var(--text-primary);
+      letter-spacing: -0.4px;
+    }
+
+    /* --- Projects --- */
+    .projects-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 2rem;
+    }
+
+    .project-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border-glass);
+      border-radius: 18px;
+      padding: 2rem;
+      transition: transform 0.25s, border-color 0.25s, box-shadow 0.25s;
+      position: relative;
+      overflow: hidden;
+      box-shadow: var(--shadow-soft);
+    }
+
+    .project-card:before {
+      content: "";
+      position: absolute;
+      inset: -2px;
+      background:
+        radial-gradient(circle at 20% 20%, rgba(201,162,39,0.18), transparent 40%),
+        radial-gradient(circle at 80% 10%, rgba(91,42,134,0.12), transparent 40%);
+      opacity: 0.55;
+      pointer-events: none;
+    }
+
+    .project-card > * { position: relative; }
+
+    .project-card:hover {
+      border-color: rgba(15,106,59,0.35);
+      transform: translateY(-4px);
+      box-shadow: 0 22px 60px rgba(17,24,39,0.14);
+    }
+
+    .badge {
+      display: inline-block;
+      padding: 5px 12px;
+      border-radius: 20px;
+      font-size: 0.75rem;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      margin-bottom: 1rem;
+    }
+
+    .badge-live {
+      background: rgba(15,106,59,0.10);
+      color: var(--accent-green);
+      border: 1px solid rgba(15,106,59,0.20);
+    }
+
+    .badge-soon {
+      background: rgba(201,162,39,0.12);
+      color: #8a6a06;
+      border: 1px solid rgba(201,162,39,0.22);
+    }
+
+    .badge-rd {
+      background: rgba(91,42,134,0.10);
+      color: var(--accent-purple);
+      border: 1px solid rgba(91,42,134,0.20);
+    }
+
+    .project-title {
+      font-size: 1.55rem;
+      font-weight: 800;
+      margin-bottom: 0.5rem;
+      font-family: var(--font-display);
+      letter-spacing: -0.2px;
+    }
+
+    .project-desc {
+      color: var(--text-secondary);
+      font-size: 0.95rem;
+      margin-bottom: 1.25rem;
+    }
+
+    .project-links a {
+      font-weight: 750;
+      font-size: 0.92rem;
+      color: var(--link);
+    }
+    .project-links a:hover { color: var(--accent-purple); }
+
+    .project-links .secondary {
+      margin-left: 14px;
+      font-weight: 650;
+      color: rgba(17,24,39,0.70);
+    }
+
+    /* --- About --- */
+    .about-box {
+      background: var(--bg-card);
+      border: 1px solid var(--border-glass);
+      border-radius: 24px;
+      padding: 2.5rem;
+      box-shadow: var(--shadow-soft);
+    }
+    .about-box p {
+      font-size: 1.05rem;
+      color: var(--text-secondary);
+      max-width: 80ch;
+    }
+
+    /* --- Support / Contact --- */
+    .support-box {
+      background: var(--bg-card);
+      border: 1px solid var(--border-glass);
+      border-radius: 24px;
+      padding: 3rem;
+      text-align: center;
+      box-shadow: var(--shadow-soft);
+    }
+
+    .email-link {
+      display: inline-block;
+      font-size: 1.35rem;
+      font-weight: 800;
+      color: var(--accent-purple);
+      margin-top: 1rem;
+      border-bottom: 2px solid transparent;
+    }
+    .email-link:hover {
+      border-bottom-color: var(--accent-purple);
+      color: var(--accent-green);
+    }
+
+    /* --- Legal --- */
+    .legal-section {
+      background: rgba(255,255,255,0.35);
+    }
+
+    .legal-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 2rem;
+    }
+    .legal-card {
+      background: rgba(255,255,255,0.78);
+      border: 1px solid var(--border-glass);
+      border-radius: 18px;
+      padding: 2rem;
+      box-shadow: var(--shadow-soft);
+    }
+    .legal-card h3 {
+      font-size: 1.1rem;
+      margin-bottom: 0.75rem;
+      color: var(--text-primary);
+      font-family: var(--font-display);
+      letter-spacing: -0.2px;
+    }
+    .legal-card p {
+      font-size: 0.95rem;
+      color: var(--text-secondary);
+      margin-bottom: 1rem;
+    }
+    .legal-card a {
+      color: var(--link);
+      font-weight: 750;
+    }
+
+    footer {
+      padding: 2rem 0;
+      text-align: center;
+      font-size: 0.9rem;
+      color: rgba(17,24,39,0.70);
+      border-top: 1px solid var(--border-glass);
+      background: rgba(255,255,255,0.55);
+    }
+
+    /* Responsive */
+    @media (max-width: 768px) {
+      h1 { font-size: 3rem; }
+      .nav-links { display: none; }
+      .logo { margin: 0 auto; }
+      .legal-grid { grid-template-columns: 1fr; }
+      section { padding: 4.5rem 0; }
+    }
+  </style>
+</head>
+
+<body>
+  <div class="ambient-bg"></div>
+  <div class="grid-overlay"></div>
+
+  <header>
+    <div class="container">
+      <nav>
+        <div class="logo">AppKrewe</div>
+        <div class="nav-links">
+          <a href="#contact" class="btn-contact">Get Support</a>
+        </div>
+      </nav>
+    </div>
+  </header>
+
+  <main>
+    <!-- Hero -->
+    <section class="hero">
+      <div class="container">
+        <h1>Small Apps.<br />Big Finish.</h1>
+        <p>
+          AppKrewe crafts focused mobile and web products where clean UX meets fast performance, backed by real US-based human support.
+        </p>
+        <a href="#work" class="btn-contact" style="padding: 1rem 2rem; font-size: 1.05rem;">View Products</a>
+      </div>
+    </section>
+
+    <!-- Work -->
+    <section id="work">
+    <div class="container">
+        <h2>Products</h2>
+
+        <div class="projects-grid">
+        <!-- ComicScan -->
+        <div class="project-card">
+            <span class="badge badge-live">Live Beta</span>
+            <div class="project-title">ComicScan AI</div>
+            <p class="project-desc">
+            Scan a comic cover to instantly identify the issue and see real market pricing.
+            </p>
+
+            <div class="project-links">
+            <div class="store-badges">
+                <img
+                src="/img/app-store-badge.svg"
+                alt="Download on the App Store"
+                class="store-badge"
+                />
+                <img
+                src="/img/google-play-badge.png"
+                alt="Get it on Google Play"
+                class="store-badge"
+                />
+            </div>
+            
+            </div>
+        </div>
+
+        <!-- WP Hosting -->
+        <div class="project-card">
+            <span class="badge badge-soon">In Development</span>
+            <div class="project-title">WP Hosting Guide</div>
+            <p class="project-desc">
+            Practical guidance for agencies running multiple client WordPress sites: hosting, uptime, speed, and ops.
+            </p>
+            <div class="project-links"></div>
+        </div>
+
+        <!-- Subsnitch -->
+        <div class="project-card">
+            <span class="badge badge-rd">Building</span>
+            <div class="project-title">Subsnitch</div>
+            <p class="project-desc">
+            The “dark pattern” identfier: Subsnitch reveals hidden weekly charges, shady billing tricks,
+            and apps using manipulative billing and weekly pricing to quietly overcharge you.
+            </p>
+        </div>
+        </div>
+    </div>
+    </section>
+
+    <!-- About -->
+    <section id="about">
+      <div class="container">
+        <h2>About</h2>
+        <div class="about-box">
+          <p>
+            AppKrewe is a small product studio. We build narrow tools that solve real problems, ship them quickly,
+            and keep them readable and reliable. Each product gets its own page, support path, and policies — because
+            “professional” isn’t a vibe, it’s follow-through.
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <!-- Support -->
+    <section id="contact">
+      <div class="container">
+        <h2>Support & Contact</h2>
+        <div class="support-box">
+          <p style="font-size: 1.15rem; color: var(--text-primary); font-weight: 750;">Need help with one of our apps?</p>
+          <p style="color: var(--text-secondary);">
+            Email us with the product name, what happened, and a screenshot. If a Device ID is shown in-app, include it only if support asks.
+          </p>
+          <a href="mailto:support@appkrewe.com" class="email-link">support@appkrewe.com</a>
+          <br /><br />
+          <p style="font-size: 0.95rem; color: var(--text-secondary);">
+           </p>
+        </div>
+      </div>
+    </section>
+
+    <!-- Legal -->
+    <section id="legal" class="legal-section">
+      <div class="container">
+        <h2>Legal</h2>
+
+        <div class="legal-grid">
+          <div class="legal-card">
+            <h3>Privacy Policy</h3>
+            <p>
+              We keep data collection minimal and product-specific. You can review details and request deletion via support.
+            </p>
+            <a href="/privacy.html">Read &rarr;</a>
+          </div>
+
+          <div class="legal-card">
+            <h3>Terms of Service</h3>
+            <p>
+              Standard terms for using AppKrewe products, including acceptable use and service availability.
+            </p>
+            <a href="/terms">Read &rarr;</a>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <div class="container">
+      <p>&copy; 2026 AppKrewe LLC. All rights reserved.</p>
+      <div style="margin-top: 0.9rem; opacity: 0.8;">
+        <a href="/privacy">Privacy</a> • <a href="/terms">Terms</a> 
+      </div>
+    </div>
+  </footer>
+</body>
+</html>
