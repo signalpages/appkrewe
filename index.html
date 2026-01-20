@@ -97,13 +97,8 @@
 
     /* --- Header --- */
     header {
-      position: fixed;
-      top: 0; left: 0; right: 0;
-      z-index: 100;
-      backdrop-filter: blur(12px);
+      padding: 0.5rem 0;   /* was bigger – this reduces whitespace */
       background: rgba(251,247,239,0.78);
-      border-bottom: 1px solid var(--border-glass);
-      padding: 1rem 0;
     }
 
     nav {
@@ -113,13 +108,14 @@
     }
 
     .logo {
-      font-family: var(--font-display);
-      font-weight: 800;
-      font-size: 1.5rem;
-      letter-spacing: -0.5px;
-      background: linear-gradient(135deg, var(--accent-green), var(--accent-purple));
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
+      display: flex;
+      align-items: center;
+    }
+
+    .logo img {
+      height: 198px;
+      width: auto;
+      display: block;
     }
 
     .nav-links {
@@ -147,13 +143,21 @@
 
     /* --- Hero --- */
     .hero {
-      min-height: 55vh;
+      /* kill the forced height */
+      min-height: auto;
+
       display: flex;
       flex-direction: column;
-      justify-content: center;
+
+      /* stop vertical centering */
+      justify-content: flex-start;
       align-items: center;
+
       text-align: center;
-      padding-top: 6.5rem;
+
+      /* tighter vertical footprint */
+      padding-top: 3.25rem;
+      padding-bottom: 3.25rem;
     }
 
     h1 {
@@ -252,6 +256,12 @@
       background: rgba(91,42,134,0.10);
       color: var(--accent-purple);
       border: 1px solid rgba(91,42,134,0.20);
+    }
+
+    .badge-review {
+      background: rgba(201,162,39,0.12);
+      color: #8a6a06;
+      border: 1px solid rgba(201,162,39,0.22);
     }
 
     .project-title {
@@ -379,7 +389,9 @@
   <header>
     <div class="container">
       <nav>
-        <div class="logo">AppKrewe</div>
+        <div class="logo">
+          <img src="Appkrewe_Logo.png" alt="AppKrewe" />
+        </div>
         <div class="nav-links">
           <a href="#contact" class="btn-contact">Get Support</a>
         </div>
@@ -428,6 +440,15 @@
             </div>
             
             </div>
+        </div>
+        
+        <!-- Petal -->
+        <div class="project-card">
+          <span class="badge badge-review">Under App Store Review</span>
+          <div class="project-title">Petal</div>
+          <p class="project-desc">
+            A wellness-focused app built to help people stay consistent with small habits and reduce mental load.
+          </p>
         </div>
 
         <!-- WP Hosting -->
